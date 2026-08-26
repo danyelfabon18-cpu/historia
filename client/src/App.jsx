@@ -9,12 +9,8 @@ import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
 import Conversation from "./pages/Conversation";
 
-import AdminLogin from "./pages/AdminLogin";
+import AdminPortalLogin from "./pages/AdminPortalLogin";
 import AdminInbox from "./pages/AdminInbox";
-
-/* =========================================================
-   ADMIN PROTECTED ROUTE
-========================================================= */
 
 function ProtectedAdminRoute({ children }) {
   const token = sessionStorage.getItem("historia_admin_token");
@@ -26,32 +22,20 @@ function ProtectedAdminRoute({ children }) {
   return children;
 }
 
-/* =========================================================
-   APP
-========================================================= */
-
 function App() {
   return (
     <Routes>
-      {/* PUBLIC PORTFOLIO */}
-
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
-
         <Route path="/about" element={<About />} />
-
         <Route path="/skills" element={<Skills />} />
-
         <Route path="/projects" element={<Projects />} />
-
         <Route path="/contact" element={<Contact />} />
 
         <Route path="/conversation/:id" element={<Conversation />} />
       </Route>
 
-      {/* ADMIN */}
-
-      <Route path="/admin" element={<AdminLogin />} />
+      <Route path="/admin" element={<AdminPortalLogin />} />
 
       <Route
         path="/admin/inbox"
@@ -61,8 +45,6 @@ function App() {
           </ProtectedAdminRoute>
         }
       />
-
-      {/* FALLBACK */}
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
