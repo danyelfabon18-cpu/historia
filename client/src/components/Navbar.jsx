@@ -1,10 +1,13 @@
 import { useRef, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-import { LockKeyhole, Menu, ShieldCheck, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+
+import historiaLogo from "../assets/historia-logo.png";
 
 function Navbar({ floating = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
+
   const [isMoving, setIsMoving] = useState(false);
 
   const navRef = useRef(null);
@@ -12,19 +15,50 @@ function Navbar({ floating = false }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const adminToken = sessionStorage.getItem("historia_admin_token");
-
-  const adminPath = adminToken ? "/admin/inbox" : "/admin";
-
-  const adminLabel = adminToken ? "Admin Inbox" : "Admin Login";
-
   const links = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Skills", path: "/skills" },
-    { name: "Projects", path: "/projects" },
-    { name: "Contact", path: "/contact" },
+    {
+      name: "Home",
+      path: "/",
+    },
+    {
+      name: "About",
+      path: "/about",
+    },
+    {
+      name: "Skills",
+      path: "/skills",
+    },
+    {
+      name: "Projects",
+      path: "/projects",
+    },
+    {
+      name: "Contact",
+      path: "/contact",
+    },
   ];
+
+  /* =========================================================
+     ADMIN DESTINATION
+
+     The H logo acts as the discreet admin button.
+
+     Logged out:
+     /admin
+
+     Logged in:
+     /admin/inbox
+  ========================================================= */
+
+  const getAdminPath = () => {
+    const adminToken = sessionStorage.getItem("historia_admin_token");
+
+    return adminToken ? "/admin/inbox" : "/admin";
+  };
+
+  /* =========================================================
+     NORMAL NAVIGATION
+  ========================================================= */
 
   const handleNavigation = (event, path) => {
     setMenuOpen(false);
@@ -56,6 +90,16 @@ function Navbar({ floating = false }) {
     }
   };
 
+  /* =========================================================
+     ADMIN LOGO
+  ========================================================= */
+
+  const handleAdminNavigation = () => {
+    setMenuOpen(false);
+
+    navigate(getAdminPath());
+  };
+
   return (
     <nav
       ref={navRef}
@@ -74,19 +118,47 @@ function Navbar({ floating = false }) {
             : "flex items-center justify-between md:justify-start"
         }
       >
-        {/* LOGO */}
+        {/* =====================================================
+            BRAND
+        ====================================================== */}
 
         {floating && (
-          <NavLink
-            to="/"
-            onClick={(event) => handleNavigation(event, "/")}
-            className="text-lg font-semibold tracking-tight text-white"
-          >
-            Historia.
-          </NavLink>
+          <div className="flex items-center gap-2.5">
+            {/* SECRET ADMIN ACCESS */}
+
+            <button
+              type="button"
+              onClick={handleAdminNavigation}
+              className="group relative flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg transition-all duration-300 hover:scale-105"
+              aria-label="Historia"
+              title="Historia"
+            >
+              {/* SUBTLE HOVER GLOW */}
+
+              <div className="pointer-events-none absolute inset-0 rounded-lg bg-white/[0.035] opacity-0 blur-md transition-opacity duration-300 group-hover:opacity-100" />
+
+              <img
+                src={historiaLogo}
+                alt=""
+                className="relative z-10 h-8 w-8 object-cover opacity-80 transition-all duration-300 group-hover:opacity-100"
+              />
+            </button>
+
+            {/* HISTORIA HOME LINK */}
+
+            <NavLink
+              to="/"
+              onClick={(event) => handleNavigation(event, "/")}
+              className="text-lg font-semibold tracking-tight text-white"
+            >
+              Historia.
+            </NavLink>
+          </div>
         )}
 
-        {/* DESKTOP NAVIGATION */}
+        {/* =====================================================
+            DESKTOP NAVIGATION
+        ====================================================== */}
 
         <div
           className={
@@ -119,31 +191,11 @@ function Navbar({ floating = false }) {
               )}
             </NavLink>
           ))}
-
-          {/* ADMIN ACCESS */}
-
-          <NavLink
-            to={adminPath}
-            onClick={(event) => handleNavigation(event, adminPath)}
-            className="group ml-1 flex items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.015] px-3 py-2 text-[10px] text-zinc-600 transition-all duration-200 hover:border-orange-400/20 hover:bg-orange-400/[0.035] hover:text-orange-400"
-          >
-            {adminToken ? (
-              <ShieldCheck
-                size={12}
-                className="transition-colors group-hover:text-orange-400"
-              />
-            ) : (
-              <LockKeyhole
-                size={12}
-                className="transition-colors group-hover:text-orange-400"
-              />
-            )}
-
-            <span>{adminLabel}</span>
-          </NavLink>
         </div>
 
-        {/* MOBILE MENU BUTTON */}
+        {/* =====================================================
+            MOBILE MENU BUTTON
+        ====================================================== */}
 
         <button
           type="button"
@@ -155,7 +207,9 @@ function Navbar({ floating = false }) {
         </button>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* =====================================================
+          MOBILE MENU
+      ====================================================== */}
 
       {menuOpen && (
         <div
@@ -180,24 +234,6 @@ function Navbar({ floating = false }) {
                 {link.name}
               </NavLink>
             ))}
-
-            {/* MOBILE ADMIN */}
-
-            <div className="border-t border-white/[0.07] pt-5">
-              <NavLink
-                to={adminPath}
-                onClick={(event) => handleNavigation(event, adminPath)}
-                className="flex items-center gap-2 text-xs text-zinc-600 transition-colors hover:text-orange-400"
-              >
-                {adminToken ? (
-                  <ShieldCheck size={14} />
-                ) : (
-                  <LockKeyhole size={14} />
-                )}
-
-                {adminLabel}
-              </NavLink>
-            </div>
           </div>
         </div>
       )}
