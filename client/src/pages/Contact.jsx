@@ -1,14 +1,17 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import {
+  ArrowRight,
   ArrowUpRight,
   Code2,
   Mail,
   MapPin,
+  MessageCircle,
   MessageSquare,
   Send,
 } from "lucide-react";
+
+import { useNavigate } from "react-router-dom";
 
 const initialForm = {
   name: "",
@@ -29,6 +32,38 @@ function Contact() {
 
   const [isSending, setIsSending] = useState(false);
 
+  const [existingConversationId, setExistingConversationId] = useState(null);
+
+  /* =========================================================
+     CHECK SAVED VISITOR CONVERSATION
+  ========================================================= */
+
+  useEffect(() => {
+    const savedConversationId = localStorage.getItem(
+      "historia_latest_conversation",
+    );
+
+    if (!savedConversationId) {
+      return;
+    }
+
+    const savedToken = localStorage.getItem(
+      `historia_conversation_${savedConversationId}_token`,
+    );
+
+    if (!savedToken) {
+      localStorage.removeItem("historia_latest_conversation");
+
+      return;
+    }
+
+    setExistingConversationId(savedConversationId);
+  }, []);
+
+  /* =========================================================
+     FORM CHANGE
+  ========================================================= */
+
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -45,9 +80,21 @@ function Contact() {
     }
   };
 
-  /* =======================================================
-     START CONVERSATION
-  ======================================================= */
+  /* =========================================================
+     CONTINUE EXISTING CONVERSATION
+  ========================================================= */
+
+  const continueConversation = () => {
+    if (!existingConversationId) {
+      return;
+    }
+
+    navigate(`/conversation/${existingConversationId}`);
+  };
+
+  /* =========================================================
+     START NEW CONVERSATION
+  ========================================================= */
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -81,7 +128,8 @@ function Contact() {
       const conversationId = data.conversation.id;
 
       /*
-        Store private access token only in this browser.
+        Private visitor access token.
+        The raw token stays on this browser.
       */
 
       localStorage.setItem(
@@ -91,12 +139,15 @@ function Contact() {
 
       localStorage.setItem("historia_latest_conversation", conversationId);
 
+      setExistingConversationId(conversationId);
+
       setFormData(initialForm);
 
       navigate(`/conversation/${conversationId}`);
     } catch (error) {
       setStatus({
         type: "error",
+
         message: error.message || "Something went wrong. Please try again.",
       });
     } finally {
@@ -109,6 +160,7 @@ function Contact() {
       {/* BACKGROUND */}
 
       <div className="home-grid pointer-events-none absolute inset-0" />
+
       <div className="home-moving-light pointer-events-none absolute inset-0" />
 
       <div className="pointer-events-none absolute right-[5%] top-[14%] h-[520px] w-[520px] rounded-full bg-orange-500/[0.03] blur-[160px]" />
@@ -170,6 +222,49 @@ function Contact() {
           </div>
         </div>
 
+        {/* =====================================================
+            RETURNING VISITOR
+        ====================================================== */}
+
+        {existingConversationId && (
+          <div className="mt-8">
+            <button
+              type="button"
+              onClick={continueConversation}
+              className="group flex w-full items-center justify-between gap-5 rounded-2xl border border-orange-400/20 bg-orange-400/[0.035] px-5 py-4 text-left transition-all hover:border-orange-400/40 hover:bg-orange-400/[0.06] sm:px-6"
+            >
+              <div className="flex min-w-0 items-center gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-orange-400/20 bg-orange-400/[0.05] text-orange-400">
+                  <MessageCircle size={17} />
+                </div>
+
+                <div className="min-w-0">
+                  <p className="text-[8px] uppercase tracking-[0.28em] text-orange-400">
+                    Existing Conversation
+                  </p>
+
+                  <p className="mt-1.5 text-sm text-zinc-300">
+                    Continue your previous Historia conversation
+                  </p>
+
+                  <p className="mt-1 text-[9px] text-zinc-700">
+                    Available on this browser
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex shrink-0 items-center gap-2 text-[10px] text-orange-400">
+                <span className="hidden sm:inline">Continue</span>
+
+                <ArrowRight
+                  size={14}
+                  className="transition-transform group-hover:translate-x-1"
+                />
+              </div>
+            </button>
+          </div>
+        )}
+
         {/* CONTACT */}
 
         <div className="mt-12 grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
@@ -191,6 +286,8 @@ function Contact() {
             </p>
 
             <div className="mt-9">
+              {/* LOCATION */}
+
               <div className="flex items-center gap-4 border-b border-white/[0.07] py-5">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-orange-400/15 bg-orange-400/[0.035] text-orange-400">
                   <MapPin size={16} />
@@ -207,6 +304,8 @@ function Contact() {
                 </div>
               </div>
 
+              {/* MESSAGING */}
+
               <div className="flex items-center gap-4 border-b border-white/[0.07] py-5">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-orange-400/15 bg-orange-400/[0.035] text-orange-400">
                   <MessageSquare size={16} />
@@ -222,6 +321,8 @@ function Contact() {
                   </p>
                 </div>
               </div>
+
+              {/* OPEN TO */}
 
               <div className="flex items-center gap-4 border-b border-white/[0.07] py-5">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-orange-400/15 bg-orange-400/[0.035] text-orange-400">
@@ -240,19 +341,23 @@ function Contact() {
               </div>
             </div>
 
+            {/* PRIVATE NOTE */}
+
             <div className="mt-8 border-l border-orange-400/30 pl-4">
               <p className="text-[8px] uppercase tracking-[0.25em] text-orange-400">
                 Private Conversation
               </p>
 
               <p className="mt-2 max-w-sm text-xs leading-6 text-zinc-600">
-                A private conversation access token is stored on your browser
-                after your first message.
+                Your private conversation access is stored on this browser,
+                allowing you to return to your latest conversation later.
               </p>
             </div>
           </div>
 
-          {/* FORM */}
+          {/* =================================================
+              FORM
+          ================================================== */}
 
           <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.012] p-6 sm:p-8">
             <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-orange-500/[0.035] blur-[80px]" />

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-import { Menu, X } from "lucide-react";
+import { LockKeyhole, Menu, ShieldCheck, X } from "lucide-react";
 
 function Navbar({ floating = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -11,6 +11,12 @@ function Navbar({ floating = false }) {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const adminToken = sessionStorage.getItem("historia_admin_token");
+
+  const adminPath = adminToken ? "/admin/inbox" : "/admin";
+
+  const adminLabel = adminToken ? "Admin Inbox" : "Admin Login";
 
   const links = [
     { name: "Home", path: "/" },
@@ -42,10 +48,6 @@ function Navbar({ floating = false }) {
 
       setIsMoving(true);
 
-      /*
-        Small delay only so the lift starts visibly.
-        70ms feels much more responsive than 120–450ms.
-      */
       setTimeout(() => {
         navigate(path);
       }, 70);
@@ -72,7 +74,7 @@ function Navbar({ floating = false }) {
             : "flex items-center justify-between md:justify-start"
         }
       >
-        {/* Logo only on top navbar */}
+        {/* LOGO */}
 
         {floating && (
           <NavLink
@@ -84,7 +86,7 @@ function Navbar({ floating = false }) {
           </NavLink>
         )}
 
-        {/* Desktop navigation */}
+        {/* DESKTOP NAVIGATION */}
 
         <div
           className={
@@ -117,9 +119,31 @@ function Navbar({ floating = false }) {
               )}
             </NavLink>
           ))}
+
+          {/* ADMIN ACCESS */}
+
+          <NavLink
+            to={adminPath}
+            onClick={(event) => handleNavigation(event, adminPath)}
+            className="group ml-1 flex items-center gap-2 rounded-lg border border-white/[0.07] bg-white/[0.015] px-3 py-2 text-[10px] text-zinc-600 transition-all duration-200 hover:border-orange-400/20 hover:bg-orange-400/[0.035] hover:text-orange-400"
+          >
+            {adminToken ? (
+              <ShieldCheck
+                size={12}
+                className="transition-colors group-hover:text-orange-400"
+              />
+            ) : (
+              <LockKeyhole
+                size={12}
+                className="transition-colors group-hover:text-orange-400"
+              />
+            )}
+
+            <span>{adminLabel}</span>
+          </NavLink>
         </div>
 
-        {/* Mobile menu button */}
+        {/* MOBILE MENU BUTTON */}
 
         <button
           type="button"
@@ -131,7 +155,7 @@ function Navbar({ floating = false }) {
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* MOBILE MENU */}
 
       {menuOpen && (
         <div
@@ -156,6 +180,24 @@ function Navbar({ floating = false }) {
                 {link.name}
               </NavLink>
             ))}
+
+            {/* MOBILE ADMIN */}
+
+            <div className="border-t border-white/[0.07] pt-5">
+              <NavLink
+                to={adminPath}
+                onClick={(event) => handleNavigation(event, adminPath)}
+                className="flex items-center gap-2 text-xs text-zinc-600 transition-colors hover:text-orange-400"
+              >
+                {adminToken ? (
+                  <ShieldCheck size={14} />
+                ) : (
+                  <LockKeyhole size={14} />
+                )}
+
+                {adminLabel}
+              </NavLink>
+            </div>
           </div>
         </div>
       )}
