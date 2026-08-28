@@ -132,9 +132,7 @@ function Skills() {
   return (
     <section className="relative min-h-screen overflow-hidden bg-black text-white">
       {/* BACKGROUND */}
-
       <div className="home-grid pointer-events-none absolute inset-0" />
-
       <div className="home-moving-light pointer-events-none absolute inset-0" />
 
       <div className="pointer-events-none absolute left-[5%] top-[18%] h-[450px] w-[450px] rounded-full bg-orange-500/[0.025] blur-[150px]" />
@@ -142,7 +140,6 @@ function Skills() {
       <div className="pointer-events-none absolute bottom-[10%] right-[5%] h-[500px] w-[500px] rounded-full bg-white/[0.015] blur-[160px]" />
 
       {/* FLOATING DECORATIONS */}
-
       <Code2
         size={34}
         className="tech-float tech-float-one pointer-events-none absolute left-[5%] top-[15%] hidden text-orange-400/15 lg:block"
@@ -159,10 +156,8 @@ function Skills() {
       />
 
       {/* MAIN CONTENT */}
-
       <div className="relative z-10 mx-auto max-w-7xl px-6 pb-16 pt-16 lg:px-10 lg:pb-14 lg:pt-12">
         {/* PAGE INDICATOR */}
-
         <div className="mb-5 flex items-center gap-4">
           <span className="font-mono text-[10px] tracking-[0.3em] text-orange-400">
             03
@@ -176,7 +171,6 @@ function Skills() {
         </div>
 
         {/* INTRO */}
-
         <div className="grid items-end gap-8 border-b border-white/10 pb-8 lg:grid-cols-[1fr_0.8fr]">
           <div>
             <p className="mb-4 text-xs uppercase tracking-[0.35em] text-orange-500">
@@ -202,7 +196,6 @@ function Skills() {
         </div>
 
         {/* AREAS OF EXPERIENCE */}
-
         <div className="mt-10">
           <div className="mb-6 flex items-end justify-between gap-5">
             <div>
@@ -229,24 +222,20 @@ function Skills() {
                   key={group.number}
                   className="group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.012] p-5 transition-all duration-300 hover:border-orange-400/20 sm:p-6"
                 >
-                  {/* SUBTLE CARD LIGHT */}
-
                   <div className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-orange-500/[0.025] blur-[45px]" />
 
-                  <div className="relative z-10 flex items-start gap-4">
-                    {/* SMALL NUMBER ONLY */}
+                  <span className="pointer-events-none absolute -bottom-5 right-3 select-none font-mono text-[70px] font-semibold text-white/[0.012]">
+                    {group.number}
+                  </span>
 
+                  <div className="relative z-10 flex items-start gap-4">
                     <span className="mt-1 font-mono text-[8px] tracking-[0.2em] text-zinc-700">
                       {group.number}
                     </span>
 
-                    {/* ICON */}
-
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-orange-400/15 bg-orange-400/[0.035] text-orange-400 transition-all duration-300 group-hover:border-orange-400/30 group-hover:bg-orange-400/[0.07]">
                       <Icon size={18} />
                     </div>
-
-                    {/* TEXT */}
 
                     <div>
                       <p className="text-[8px] uppercase tracking-[0.25em] text-orange-400">
@@ -262,8 +251,6 @@ function Skills() {
                       </p>
                     </div>
                   </div>
-
-                  {/* SKILLS */}
 
                   <div className="relative z-10 mt-5 flex flex-wrap gap-2">
                     {group.skills.map((skill) => (
@@ -282,7 +269,6 @@ function Skills() {
         </div>
 
         {/* PROGRAMMING LANGUAGES */}
-
         <div className="mt-10 grid gap-7 border-y border-white/10 py-7 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
           <div>
             <div className="flex items-center gap-3">
@@ -318,7 +304,6 @@ function Skills() {
         </div>
 
         {/* PROFESSIONAL STRENGTHS */}
-
         <div className="mt-9">
           <div className="grid gap-6 lg:grid-cols-[0.65fr_1.35fr] lg:items-center">
             <div>
@@ -339,7 +324,6 @@ function Skills() {
                   className="flex items-center gap-2 rounded-full border border-white/[0.07] bg-white/[0.012] px-4 py-2 text-xs text-zinc-400"
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-orange-400" />
-
                   {strength}
                 </div>
               ))}
@@ -348,7 +332,6 @@ function Skills() {
         </div>
 
         {/* BOTTOM */}
-
         <div className="mt-10 flex items-center gap-4">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
 
