@@ -1,23 +1,10 @@
 # Dependencies
 node_modules/
-client/node_modules/
-server/node_modules/
 
-# Environment variables
+# Environment variables / secrets
 .env
 .env.*
 !.env.example
-
-client/.env
-client/.env.*
-server/.env
-server/.env.*
-
-# Production builds
-dist/
-client/dist/
-server/dist/
-build/
 
 # Logs
 *.log
@@ -26,15 +13,14 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Editor
+# Build output
+dist/
+build/
+
+# Editor files
 .vscode/
 .idea/
 
 # OS files
 .DS_Store
 Thumbs.db
-
-# Temporary files
-*.tmp
-*.temp
-.cache/

@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   ArrowRight,
   ArrowUpRight,
   Code2,
+  ExternalLink,
   Mail,
   MapPin,
   MessageCircle,
   MessageSquare,
   Send,
 } from "lucide-react";
+
+import { FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 
 import { useNavigate } from "react-router-dom";
 
@@ -32,19 +35,13 @@ function Contact() {
 
   const [isSending, setIsSending] = useState(false);
 
-  const [existingConversationId, setExistingConversationId] = useState(null);
-
-  /* =========================================================
-     CHECK SAVED VISITOR CONVERSATION
-  ========================================================= */
-
-  useEffect(() => {
+  const [existingConversationId, setExistingConversationId] = useState(() => {
     const savedConversationId = localStorage.getItem(
       "historia_latest_conversation",
     );
 
     if (!savedConversationId) {
-      return;
+      return null;
     }
 
     const savedToken = localStorage.getItem(
@@ -54,15 +51,11 @@ function Contact() {
     if (!savedToken) {
       localStorage.removeItem("historia_latest_conversation");
 
-      return;
+      return null;
     }
 
-    setExistingConversationId(savedConversationId);
-  }, []);
-
-  /* =========================================================
-     FORM CHANGE
-  ========================================================= */
+    return savedConversationId;
+  });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -80,10 +73,6 @@ function Contact() {
     }
   };
 
-  /* =========================================================
-     CONTINUE EXISTING CONVERSATION
-  ========================================================= */
-
   const continueConversation = () => {
     if (!existingConversationId) {
       return;
@@ -91,10 +80,6 @@ function Contact() {
 
     navigate(`/conversation/${existingConversationId}`);
   };
-
-  /* =========================================================
-     START NEW CONVERSATION
-  ========================================================= */
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -126,11 +111,6 @@ function Contact() {
       }
 
       const conversationId = data.conversation.id;
-
-      /*
-        Private visitor access token.
-        The raw token stays on this browser.
-      */
 
       localStorage.setItem(
         `historia_conversation_${conversationId}_token`,
@@ -222,52 +202,40 @@ function Contact() {
           </div>
         </div>
 
-        {/* =====================================================
-            RETURNING VISITOR
-        ====================================================== */}
+        {/* CONTINUE CONVERSATION */}
 
         {existingConversationId && (
-          <div className="mt-8">
+          <div className="mt-6 flex">
             <button
               type="button"
               onClick={continueConversation}
-              className="group flex w-full items-center justify-between gap-5 rounded-2xl border border-orange-400/20 bg-orange-400/[0.035] px-5 py-4 text-left transition-all hover:border-orange-400/40 hover:bg-orange-400/[0.06] sm:px-6"
+              className="group flex w-full items-center gap-3 rounded-xl border border-orange-400/15 bg-orange-400/[0.025] px-3.5 py-3 text-left transition-all duration-300 hover:border-orange-400/35 hover:bg-orange-400/[0.05] sm:w-auto sm:min-w-[390px]"
             >
-              <div className="flex min-w-0 items-center gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-orange-400/20 bg-orange-400/[0.05] text-orange-400">
-                  <MessageCircle size={17} />
-                </div>
-
-                <div className="min-w-0">
-                  <p className="text-[8px] uppercase tracking-[0.28em] text-orange-400">
-                    Existing Conversation
-                  </p>
-
-                  <p className="mt-1.5 text-sm text-zinc-300">
-                    Continue your previous Historia conversation
-                  </p>
-
-                  <p className="mt-1 text-[9px] text-zinc-700">
-                    Available on this browser
-                  </p>
-                </div>
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-orange-400/20 bg-orange-400/[0.04] text-orange-400">
+                <MessageCircle size={14} />
               </div>
 
-              <div className="flex shrink-0 items-center gap-2 text-[10px] text-orange-400">
-                <span className="hidden sm:inline">Continue</span>
+              <div className="min-w-0 flex-1">
+                <p className="text-[7px] uppercase tracking-[0.24em] text-orange-400/80">
+                  Previous Conversation
+                </p>
 
-                <ArrowRight
-                  size={14}
-                  className="transition-transform group-hover:translate-x-1"
-                />
+                <p className="mt-1 truncate text-xs text-zinc-300">
+                  Continue your Historia chat
+                </p>
               </div>
+
+              <ArrowRight
+                size={13}
+                className="shrink-0 text-orange-400/70 transition-transform duration-300 group-hover:translate-x-1"
+              />
             </button>
           </div>
         )}
 
         {/* CONTACT */}
 
-        <div className="mt-12 grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
+        <div className="mt-10 grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
           {/* LEFT */}
 
           <div>
@@ -339,11 +307,69 @@ function Contact() {
                   </p>
                 </div>
               </div>
+
+              {/* CONNECT */}
+
+              <div className="border-b border-white/[0.07] py-5">
+                <p className="text-[8px] uppercase tracking-[0.25em] text-zinc-700">
+                  Connect
+                </p>
+
+                <div className="mt-3 grid grid-cols-2 gap-3">
+                  {/* LINKEDIN */}
+
+                  <a
+                    href="https://www.linkedin.com/in/daniel-fabon-07a433418/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between rounded-xl border border-white/[0.07] bg-white/[0.012] px-3.5 py-3 transition-all duration-300 hover:border-orange-400/25 hover:bg-orange-400/[0.025]"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-orange-400/15 bg-orange-400/[0.025] text-orange-400">
+                        <FaLinkedinIn size={13} />
+                      </div>
+
+                      <span className="text-[10px] text-zinc-400 transition-colors group-hover:text-zinc-200">
+                        LinkedIn
+                      </span>
+                    </div>
+
+                    <ExternalLink
+                      size={11}
+                      className="text-zinc-700 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-orange-400"
+                    />
+                  </a>
+
+                  {/* FACEBOOK */}
+
+                  <a
+                    href="https://www.facebook.com/danzfab01"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between rounded-xl border border-white/[0.07] bg-white/[0.012] px-3.5 py-3 transition-all duration-300 hover:border-orange-400/25 hover:bg-orange-400/[0.025]"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-orange-400/15 bg-orange-400/[0.025] text-orange-400">
+                        <FaFacebookF size={13} />
+                      </div>
+
+                      <span className="text-[10px] text-zinc-400 transition-colors group-hover:text-zinc-200">
+                        Facebook
+                      </span>
+                    </div>
+
+                    <ExternalLink
+                      size={11}
+                      className="text-zinc-700 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-orange-400"
+                    />
+                  </a>
+                </div>
+              </div>
             </div>
 
             {/* PRIVATE NOTE */}
 
-            <div className="mt-8 border-l border-orange-400/30 pl-4">
+            <div className="mt-7 border-l border-orange-400/30 pl-4">
               <p className="text-[8px] uppercase tracking-[0.25em] text-orange-400">
                 Private Conversation
               </p>
@@ -355,18 +381,10 @@ function Contact() {
             </div>
           </div>
 
-          {/* =================================================
-              FORM
-          ================================================== */}
+          {/* FORM */}
 
           <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.012] p-6 sm:p-8">
             <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-orange-500/[0.035] blur-[80px]" />
-
-            <span className="pointer-events-none absolute -bottom-8 -right-3 select-none text-[95px] font-semibold tracking-[-0.06em] text-white/[0.012]">
-              HELLO
-            </span>
-
-            {/* HEADER */}
 
             <div className="relative z-10 mb-7 flex items-start justify-between gap-5 border-b border-white/[0.07] pb-6">
               <div>
@@ -384,12 +402,8 @@ function Contact() {
               </div>
             </div>
 
-            {/* FORM */}
-
             <form onSubmit={handleSubmit} className="relative z-10">
               <div className="grid gap-6 sm:grid-cols-2">
-                {/* NAME */}
-
                 <div>
                   <label
                     htmlFor="name"
@@ -410,8 +424,6 @@ function Contact() {
                     className="mt-2 w-full border-b border-white/10 bg-transparent py-3 text-sm text-white outline-none transition-colors placeholder:text-zinc-700 focus:border-orange-400/60"
                   />
                 </div>
-
-                {/* EMAIL */}
 
                 <div>
                   <label
@@ -435,8 +447,6 @@ function Contact() {
                 </div>
               </div>
 
-              {/* SUBJECT */}
-
               <div className="mt-7">
                 <label
                   htmlFor="subject"
@@ -457,8 +467,6 @@ function Contact() {
                   className="mt-2 w-full border-b border-white/10 bg-transparent py-3 text-sm text-white outline-none transition-colors placeholder:text-zinc-700 focus:border-orange-400/60"
                 />
               </div>
-
-              {/* MESSAGE */}
 
               <div className="mt-7">
                 <div className="flex items-center justify-between">
@@ -487,15 +495,11 @@ function Contact() {
                 />
               </div>
 
-              {/* ERROR */}
-
               {status.message && (
                 <div className="mt-5 rounded-xl border border-red-400/20 bg-red-400/[0.04] px-4 py-3 text-xs text-red-300">
                   {status.message}
                 </div>
               )}
-
-              {/* SUBMIT */}
 
               <div className="mt-7 flex flex-wrap items-center justify-between gap-5">
                 <p className="max-w-xs text-[9px] leading-5 text-zinc-700">

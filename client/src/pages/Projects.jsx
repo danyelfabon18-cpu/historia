@@ -124,6 +124,7 @@ function ProjectGallery({
   return (
     <div>
       {/* MAIN IMAGE */}
+
       <div className="group relative overflow-hidden rounded-xl border border-white/[0.08] bg-zinc-950">
         <div className="relative aspect-[16/9] overflow-hidden">
           <img
@@ -132,10 +133,10 @@ function ProjectGallery({
             className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.01]"
           />
 
-          {/* OVERLAY */}
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-black/10" />
 
           {/* LABEL */}
+
           <div className="absolute left-4 top-4 rounded-full border border-white/10 bg-black/65 px-3 py-1.5 backdrop-blur-md">
             <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-zinc-300">
               {label}
@@ -143,6 +144,7 @@ function ProjectGallery({
           </div>
 
           {/* EXPAND */}
+
           <button
             type="button"
             onClick={onExpand}
@@ -153,6 +155,7 @@ function ProjectGallery({
           </button>
 
           {/* IMAGE TITLE */}
+
           <div className="absolute bottom-4 left-4">
             <p className="text-xs font-medium text-white">
               {activeImage.title}
@@ -165,6 +168,7 @@ function ProjectGallery({
           </div>
 
           {/* NAVIGATION */}
+
           {images.length > 1 && (
             <div className="absolute bottom-4 right-4 flex gap-2">
               <button
@@ -190,6 +194,7 @@ function ProjectGallery({
       </div>
 
       {/* THUMBNAILS */}
+
       <div
         className={`mt-3 grid gap-2.5 ${
           images.length === 4
@@ -238,6 +243,7 @@ function ProjectGallery({
 
 function Projects() {
   const [invensionActive, setInvensionActive] = useState(0);
+
   const [unitradeActive, setUnitradeActive] = useState(0);
 
   const [lightbox, setLightbox] = useState(null);
@@ -256,6 +262,7 @@ function Projects() {
   const lightboxPrevious = () => {
     setLightbox((current) => ({
       ...current,
+
       index:
         current.index === 0 ? current.images.length - 1 : current.index - 1,
     }));
@@ -264,6 +271,7 @@ function Projects() {
   const lightboxNext = () => {
     setLightbox((current) => ({
       ...current,
+
       index:
         current.index === current.images.length - 1 ? 0 : current.index + 1,
     }));
@@ -276,13 +284,11 @@ function Projects() {
       ====================================================== */}
 
       <div className="home-grid pointer-events-none absolute inset-0" />
+
       <div className="home-moving-light pointer-events-none absolute inset-0" />
 
-      <div className="pointer-events-none absolute right-[5%] top-[12%] h-[520px] w-[520px] rounded-full bg-orange-500/[0.025] blur-[160px]" />
-
-      <div className="pointer-events-none absolute bottom-[10%] left-[4%] h-[420px] w-[420px] rounded-full bg-white/[0.015] blur-[150px]" />
-
       {/* FLOATING DECORATIONS */}
+
       <Code2
         size={34}
         className="tech-float tech-float-one pointer-events-none absolute left-[5%] top-[14%] hidden text-orange-400/15 lg:block"
@@ -302,8 +308,9 @@ function Projects() {
           MAIN CONTENT
       ====================================================== */}
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-20 pt-16 lg:px-10 lg:pb-16 lg:pt-12">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-16 pt-16 lg:px-10 lg:pb-12 lg:pt-12">
         {/* PAGE INDICATOR */}
+
         <div className="mb-5 flex items-center gap-4">
           <span className="font-mono text-[10px] tracking-[0.3em] text-orange-400">
             04
@@ -344,9 +351,10 @@ function Projects() {
             PROJECT 01 — INVENSION
         ====================================================== */}
 
-        <article className="mt-12">
+        <article className="mt-9">
           {/* HEADER */}
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-5">
+
+          <div className="mb-5 flex flex-wrap items-end justify-between gap-5">
             <div>
               <div className="flex items-center gap-3">
                 <span className="font-mono text-[9px] tracking-[0.22em] text-orange-400">
@@ -370,7 +378,6 @@ function Projects() {
               </p>
             </div>
 
-            {/* BADGES */}
             <div className="flex flex-wrap gap-2">
               <span className="rounded-full border border-orange-400/20 bg-orange-400/[0.035] px-3 py-1.5 text-[8px] uppercase tracking-[0.18em] text-orange-400">
                 Thesis Project
@@ -383,25 +390,31 @@ function Projects() {
           </div>
 
           {/* PROJECT LAYOUT */}
-          <div className="grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-start">
+
+          <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-start lg:gap-10">
             {/* SCREENSHOTS */}
-            <ProjectGallery
-              images={invensionImages}
-              activeIndex={invensionActive}
-              setActiveIndex={setInvensionActive}
-              label="InvenSion / System Interface"
-              onExpand={() => openLightbox(invensionImages, invensionActive)}
-            />
+
+            <div>
+              <ProjectGallery
+                images={invensionImages}
+                activeIndex={invensionActive}
+                setActiveIndex={setInvensionActive}
+                label="InvenSion / System Interface"
+                onExpand={() => openLightbox(invensionImages, invensionActive)}
+              />
+            </div>
 
             {/* DETAILS */}
+
             <div>
               {/* SUMMARY */}
-              <div className="border-b border-white/[0.08] pb-6">
+
+              <div className="border-b border-white/[0.08] pb-5">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-orange-400/15 bg-orange-400/[0.035] text-orange-400">
                   <Radio size={17} />
                 </div>
 
-                <p className="mt-5 text-sm leading-7 text-zinc-400">
+                <p className="mt-4 text-sm leading-7 text-zinc-400">
                   InvenSion is an integrated RFID inventory and Point-of-Sale
                   system designed to automate product tracking, inventory
                   monitoring, and retail transactions.
@@ -414,13 +427,32 @@ function Projects() {
                 </p>
               </div>
 
+              {/* CONTRIBUTION */}
+
+              <div className="border-b border-white/[0.08] py-4">
+                <p className="text-[8px] uppercase tracking-[0.27em] text-orange-400">
+                  My Contribution
+                </p>
+
+                <p className="mt-2 text-xs font-medium text-zinc-300">
+                  Software & Hardware Integration
+                </p>
+
+                <p className="mt-2 text-[10px] leading-5 text-zinc-600">
+                  Contributed to integrating the software and hardware
+                  components, helping connect the RFID-based hardware setup with
+                  the web system for real-time operation.
+                </p>
+              </div>
+
               {/* KEY AREAS */}
-              <div className="border-b border-white/[0.08] py-6">
+
+              <div className="border-b border-white/[0.08] py-4">
                 <p className="text-[8px] uppercase tracking-[0.27em] text-zinc-600">
                   Key Areas
                 </p>
 
-                <div className="mt-4 grid grid-cols-2 gap-x-5 gap-y-5">
+                <div className="mt-4 grid grid-cols-2 gap-x-5 gap-y-4">
                   <div>
                     <Radio size={14} className="text-orange-400" />
 
@@ -472,7 +504,8 @@ function Projects() {
               </div>
 
               {/* TECHNOLOGIES */}
-              <div className="border-b border-white/[0.08] py-6">
+
+              <div className="border-b border-white/[0.08] py-4">
                 <p className="text-[8px] uppercase tracking-[0.27em] text-zinc-600">
                   Technologies
                 </p>
@@ -490,7 +523,8 @@ function Projects() {
               </div>
 
               {/* METRICS */}
-              <div className="grid grid-cols-3 gap-3 pt-6">
+
+              <div className="grid grid-cols-3 gap-3 pt-4">
                 {invensionMetrics.map((metric) => (
                   <div key={metric.label}>
                     <p className="text-lg font-medium tracking-tight text-white sm:text-xl">
@@ -511,7 +545,7 @@ function Projects() {
             PROJECT DIVIDER
         ====================================================== */}
 
-        <div className="my-16 flex items-center gap-4">
+        <div className="my-9 flex items-center gap-4">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.08] to-white/[0.02]" />
 
           <span className="font-mono text-[8px] tracking-[0.25em] text-zinc-700">
@@ -527,7 +561,8 @@ function Projects() {
 
         <article>
           {/* HEADER */}
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-5">
+
+          <div className="mb-5 flex flex-wrap items-end justify-between gap-5">
             <div>
               <div className="flex items-center gap-3">
                 <span className="font-mono text-[9px] tracking-[0.22em] text-orange-400">
@@ -562,35 +597,36 @@ function Projects() {
           </div>
 
           {/* UNITRADE LAYOUT */}
-          <div className="grid gap-9 lg:grid-cols-[0.68fr_1.32fr] lg:items-start">
+
+          <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-10">
             {/* DETAILS */}
+
             <div className="order-2 lg:order-1">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-orange-400/15 bg-orange-400/[0.035] text-orange-400">
                 <ShoppingBag size={17} />
               </div>
 
-              <p className="mt-5 text-sm leading-7 text-zinc-400">
+              <p className="mt-4 text-sm leading-7 text-zinc-400">
                 UniTrade is a campus-focused marketplace concept designed to
                 provide students and staff with a safer and more trusted way to
                 buy and sell within their university community.
               </p>
 
               {/* FEATURES */}
-              <div className="mt-6 border-t border-white/[0.08] pt-5">
+
+              <div className="mt-5 border-t border-white/[0.08] pt-4">
                 <p className="text-[8px] uppercase tracking-[0.27em] text-zinc-600">
                   Platform Features
                 </p>
 
-                <div className="mt-4">
-                  {unitradeFeatures.map((feature, index) => (
+                <div className="mt-3">
+                  {unitradeFeatures.map((feature) => (
                     <div
                       key={feature}
-                      className="group flex items-center justify-between border-b border-white/[0.05] py-3"
+                      className="group flex items-center justify-between border-b border-white/[0.05] py-2.5"
                     >
                       <div className="flex items-center gap-3">
-                        <span className="font-mono text-[8px] text-zinc-700">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
+                        <span className="h-1.5 w-1.5 rounded-full bg-orange-400/70" />
 
                         <span className="text-xs text-zinc-400 transition-colors duration-300 group-hover:text-white">
                           {feature}
@@ -607,7 +643,8 @@ function Projects() {
               </div>
 
               {/* CONTRIBUTION */}
-              <div className="mt-6 border-l border-orange-400/30 pl-4">
+
+              <div className="mt-5 border-l border-orange-400/30 pl-4">
                 <p className="text-[8px] uppercase tracking-[0.25em] text-orange-400">
                   My Contribution
                 </p>
@@ -620,6 +657,7 @@ function Projects() {
             </div>
 
             {/* SCREENSHOTS */}
+
             <div className="order-1 lg:order-2">
               <ProjectGallery
                 images={unitradeImages}
@@ -636,7 +674,7 @@ function Projects() {
             END
         ====================================================== */}
 
-        <div className="mt-16 border-t border-white/[0.08] pt-8">
+        <div className="mt-10 border-t border-white/[0.08] pt-6">
           <p className="text-[8px] uppercase tracking-[0.28em] text-zinc-700">
             Selected Projects
           </p>
@@ -647,7 +685,8 @@ function Projects() {
         </div>
 
         {/* BOTTOM */}
-        <div className="mt-10 flex items-center gap-4">
+
+        <div className="mt-7 flex items-center gap-4">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
 
           <span className="font-mono text-[8px] tracking-[0.22em] text-zinc-700">
@@ -668,6 +707,7 @@ function Projects() {
           onClick={closeLightbox}
         >
           {/* CLOSE */}
+
           <button
             type="button"
             onClick={closeLightbox}
@@ -678,6 +718,7 @@ function Projects() {
           </button>
 
           {/* PREVIOUS */}
+
           {lightbox.images.length > 1 && (
             <button
               type="button"
@@ -693,6 +734,7 @@ function Projects() {
           )}
 
           {/* IMAGE */}
+
           <div
             className="relative max-h-[88vh] max-w-[90vw]"
             onClick={(event) => event.stopPropagation()}
@@ -722,6 +764,7 @@ function Projects() {
           </div>
 
           {/* NEXT */}
+
           {lightbox.images.length > 1 && (
             <button
               type="button"

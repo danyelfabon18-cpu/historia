@@ -41,10 +41,13 @@ function AdminInbox() {
   const [selectedConversation, setSelectedConversation] = useState(null);
 
   const [search, setSearch] = useState("");
+
   const [replyMessage, setReplyMessage] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
+
   const [isRefreshing, setIsRefreshing] = useState(false);
+
   const [isSending, setIsSending] = useState(false);
 
   /* MOBILE */
@@ -54,6 +57,7 @@ function AdminInbox() {
   /* DELETE */
 
   const [deleteTarget, setDeleteTarget] = useState(null);
+
   const [isDeleting, setIsDeleting] = useState(false);
 
   /* STATUS */
@@ -66,12 +70,22 @@ function AdminInbox() {
   /* REFS */
 
   const selectedConversationIdRef = useRef(null);
-  const mobileViewRef = useRef("list");
-  const messagesEndRef = useRef(null);
 
-  /* =======================================================
+  const mobileViewRef = useRef("list");
+
+  /*
+    IMPORTANT:
+    This ref points to the CHAT SCROLL AREA only.
+
+    We no longer use scrollIntoView() because
+    that can move the entire browser viewport.
+  */
+
+  const chatScrollRef = useRef(null);
+
+  /* =========================================================
      KEEP REFS UPDATED
-  ======================================================= */
+  ========================================================= */
 
   useEffect(() => {
     selectedConversationIdRef.current = selectedConversation?._id || null;
@@ -81,18 +95,19 @@ function AdminInbox() {
     mobileViewRef.current = mobileView;
   }, [mobileView]);
 
-  /* =======================================================
+  /* =========================================================
      LOGOUT
-  ======================================================= */
+  ========================================================= */
 
   const logout = useCallback(() => {
     sessionStorage.removeItem("historia_admin_token");
+
     navigate("/admin");
   }, [navigate]);
 
-  /* =======================================================
+  /* =========================================================
      UPDATE CONVERSATION LOCALLY
-  ======================================================= */
+  ========================================================= */
 
   const updateConversationLocally = useCallback((updatedConversation) => {
     setConversations((current) => {
@@ -112,9 +127,9 @@ function AdminInbox() {
     );
   }, []);
 
-  /* =======================================================
+  /* =========================================================
      MARK CONVERSATION AS READ
-  ======================================================= */
+  ========================================================= */
 
   const markConversationAsRead = useCallback(
     async (conversationId) => {
@@ -174,6 +189,7 @@ function AdminInbox() {
       } catch (error) {
         setStatus({
           type: "error",
+
           message: error.message || "Unable to update conversation.",
         });
 
@@ -183,9 +199,9 @@ function AdminInbox() {
     [logout],
   );
 
-  /* =======================================================
+  /* =========================================================
      FETCH CONVERSATIONS
-  ======================================================= */
+  ========================================================= */
 
   const fetchConversations = useCallback(
     async (silent = false) => {
@@ -266,6 +282,7 @@ function AdminInbox() {
       } catch (error) {
         setStatus({
           type: "error",
+
           message: error.message || "Unable to load conversations.",
         });
       } finally {
@@ -276,9 +293,9 @@ function AdminInbox() {
     [logout, markConversationAsRead],
   );
 
-  /* =======================================================
+  /* =========================================================
      INITIAL LOAD
-  ======================================================= */
+  ========================================================= */
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -290,11 +307,14 @@ function AdminInbox() {
     };
   }, [fetchConversations]);
 
-  /* =======================================================
+  /* =========================================================
      AUTO REFRESH
 
-     Checks for new visitor messages every 5 seconds.
-  ======================================================= */
+     Refreshes conversations every 5 seconds.
+
+     IMPORTANT:
+     This will NOT move the browser page anymore.
+  ========================================================= */
 
   useEffect(() => {
     const interval = window.setInterval(() => {
@@ -306,30 +326,44 @@ function AdminInbox() {
     };
   }, [fetchConversations]);
 
-  /* =======================================================
-     AUTO SCROLL CHAT
-  ======================================================= */
+  /* =========================================================
+     SAFE CHAT AUTO SCROLL
+
+     Only the INTERNAL CHAT BOX scrolls.
+
+     This effect only runs when:
+     - selected conversation changes
+     - message count changes
+
+     Typing in the reply box will NOT trigger it.
+  ========================================================= */
+
+  const selectedConversationId = selectedConversation?._id || "";
+
+  const selectedMessageCount = selectedConversation?.messages?.length || 0;
 
   useEffect(() => {
-    if (!selectedConversation) {
-      return;
+    const chatContainer = chatScrollRef.current;
+
+    if (!chatContainer || !selectedConversationId) {
+      return undefined;
     }
 
     const frame = window.requestAnimationFrame(() => {
-      messagesEndRef.current?.scrollIntoView({
+      chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
         behavior: "smooth",
-        block: "end",
       });
     });
 
     return () => {
       window.cancelAnimationFrame(frame);
     };
-  }, [selectedConversation, selectedConversation?.messages?.length]);
+  }, [selectedConversationId, selectedMessageCount]);
 
-  /* =======================================================
+  /* =========================================================
      SELECT CONVERSATION
-  ======================================================= */
+  ========================================================= */
 
   const handleSelectConversation = async (conversation) => {
     setSelectedConversation(conversation);
@@ -345,17 +379,17 @@ function AdminInbox() {
     }
   };
 
-  /* =======================================================
+  /* =========================================================
      MOBILE BACK
-  ======================================================= */
+  ========================================================= */
 
   const backToInbox = () => {
     setMobileView("list");
   };
 
-  /* =======================================================
+  /* =========================================================
      ADMIN SEND REPLY
-  ======================================================= */
+  ========================================================= */
 
   const sendReply = async (event) => {
     event.preventDefault();
@@ -383,6 +417,7 @@ function AdminInbox() {
 
           headers: {
             "Content-Type": "application/json",
+
             Authorization: `Bearer ${token}`,
           },
 
@@ -421,6 +456,7 @@ function AdminInbox() {
     } catch (error) {
       setStatus({
         type: "error",
+
         message: error.message || "Unable to send reply.",
       });
     } finally {
@@ -428,9 +464,9 @@ function AdminInbox() {
     }
   };
 
-  /* =======================================================
+  /* =========================================================
      CLOSE / REOPEN CONVERSATION
-  ======================================================= */
+  ========================================================= */
 
   const changeConversationStatus = async () => {
     if (!selectedConversation) {
@@ -455,6 +491,7 @@ function AdminInbox() {
 
           headers: {
             "Content-Type": "application/json",
+
             Authorization: `Bearer ${token}`,
           },
 
@@ -479,6 +516,7 @@ function AdminInbox() {
 
       setStatus({
         type: "success",
+
         message:
           nextStatus === "closed"
             ? "Conversation closed."
@@ -494,14 +532,15 @@ function AdminInbox() {
     } catch (error) {
       setStatus({
         type: "error",
+
         message: error.message || "Unable to update conversation.",
       });
     }
   };
 
-  /* =======================================================
+  /* =========================================================
      DELETE MODAL
-  ======================================================= */
+  ========================================================= */
 
   const openDeleteModal = (conversation) => {
     setDeleteTarget(conversation);
@@ -515,9 +554,9 @@ function AdminInbox() {
     setDeleteTarget(null);
   };
 
-  /* =======================================================
+  /* =========================================================
      ESCAPE CLOSES MODAL
-  ======================================================= */
+  ========================================================= */
 
   useEffect(() => {
     if (!deleteTarget) {
@@ -537,9 +576,9 @@ function AdminInbox() {
     };
   }, [deleteTarget, isDeleting]);
 
-  /* =======================================================
+  /* =========================================================
      DELETE CONVERSATION
-  ======================================================= */
+  ========================================================= */
 
   const deleteConversation = async () => {
     if (!deleteTarget) {
@@ -614,6 +653,7 @@ function AdminInbox() {
     } catch (error) {
       setStatus({
         type: "error",
+
         message: error.message || "Unable to delete conversation.",
       });
     } finally {
@@ -621,9 +661,9 @@ function AdminInbox() {
     }
   };
 
-  /* =======================================================
+  /* =========================================================
      SEARCH
-  ======================================================= */
+  ========================================================= */
 
   const filteredConversations = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -654,17 +694,17 @@ function AdminInbox() {
     });
   }, [conversations, search]);
 
-  /* =======================================================
+  /* =========================================================
      UNREAD COUNT
-  ======================================================= */
+  ========================================================= */
 
   const unreadConversationCount = conversations.filter(
     (conversation) => conversation.adminUnreadCount > 0,
   ).length;
 
-  /* =======================================================
+  /* =========================================================
      LAST MESSAGE
-  ======================================================= */
+  ========================================================= */
 
   const getLastMessage = (conversation) => {
     if (!conversation?.messages || conversation.messages.length === 0) {
@@ -674,9 +714,9 @@ function AdminInbox() {
     return conversation.messages[conversation.messages.length - 1];
   };
 
-  /* =======================================================
+  /* =========================================================
      DATE
-  ======================================================= */
+  ========================================================= */
 
   const formatTime = (date) => {
     if (!date) {
@@ -714,15 +754,13 @@ function AdminInbox() {
     }).format(new Date(date));
   };
 
-  /* =======================================================
+  /* =========================================================
      UI
-  ======================================================= */
+  ========================================================= */
 
   return (
     <section className="min-h-screen bg-black text-white">
-      {/* =====================================================
-          HEADER
-      ====================================================== */}
+      {/* HEADER */}
 
       <header className="border-b border-white/[0.08] bg-black/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-3 px-4 py-4 sm:px-8 sm:py-5">
@@ -768,9 +806,7 @@ function AdminInbox() {
         </div>
       </header>
 
-      {/* =====================================================
-          CONTENT
-      ====================================================== */}
+      {/* CONTENT */}
 
       <div className="mx-auto max-w-[1500px] px-4 py-6 sm:px-8 sm:py-7">
         {/* TOP */}
@@ -840,14 +876,10 @@ function AdminInbox() {
           </div>
         )}
 
-        {/* =====================================================
-            INBOX
-        ====================================================== */}
+        {/* INBOX */}
 
         <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.01] lg:grid lg:min-h-[680px] lg:grid-cols-[390px_1fr]">
-          {/* =================================================
-              CONVERSATION LIST
-          ================================================== */}
+          {/* CONVERSATION LIST */}
 
           <aside
             className={`border-white/[0.08] lg:block lg:border-r ${
@@ -875,7 +907,7 @@ function AdminInbox() {
 
             {/* LIST */}
 
-            <div className="max-h-[calc(100vh-270px)] min-h-[350px] overflow-y-auto lg:max-h-[620px]">
+            <div className="max-h-[calc(100vh-270px)] min-h-[350px] overflow-y-auto overscroll-contain lg:max-h-[620px]">
               {isLoading ? (
                 <div className="flex min-h-[300px] items-center justify-center">
                   <div className="text-center">
@@ -984,9 +1016,7 @@ function AdminInbox() {
             </div>
           </aside>
 
-          {/* =================================================
-              CHAT
-          ================================================== */}
+          {/* CHAT */}
 
           <main
             className={`lg:block ${
@@ -1020,17 +1050,10 @@ function AdminInbox() {
                     </div>
 
                     <div className="flex shrink-0 gap-2">
-                      {/* CLOSE / REOPEN */}
-
                       <button
                         type="button"
                         onClick={changeConversationStatus}
                         className="flex h-9 items-center gap-2 rounded-lg border border-white/[0.08] px-3 text-[9px] text-zinc-500 transition-colors hover:border-orange-400/20 hover:text-orange-400"
-                        title={
-                          selectedConversation.status === "open"
-                            ? "Close conversation"
-                            : "Reopen conversation"
-                        }
                       >
                         {selectedConversation.status === "open" ? (
                           <Lock size={12} />
@@ -1045,8 +1068,6 @@ function AdminInbox() {
                         </span>
                       </button>
 
-                      {/* DELETE */}
-
                       <button
                         type="button"
                         onClick={() => openDeleteModal(selectedConversation)}
@@ -1057,8 +1078,6 @@ function AdminInbox() {
                       </button>
                     </div>
                   </div>
-
-                  {/* VISITOR */}
 
                   <div className="mt-5 flex items-start gap-3">
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/[0.07] bg-white/[0.02] text-zinc-500">
@@ -1081,11 +1100,12 @@ function AdminInbox() {
                   </div>
                 </div>
 
-                {/* =================================================
-                    CHAT MESSAGES
-                ================================================== */}
+                {/* CHAT MESSAGES */}
 
-                <div className="flex-1 space-y-5 overflow-y-auto p-4 sm:p-6 lg:max-h-[430px]">
+                <div
+                  ref={chatScrollRef}
+                  className="flex-1 space-y-5 overflow-y-auto overscroll-contain p-4 sm:p-6 lg:h-[430px] lg:max-h-[430px]"
+                >
                   {selectedConversation.messages?.map((chatMessage) => {
                     const isAdmin = chatMessage.sender === "admin";
 
@@ -1138,13 +1158,9 @@ function AdminInbox() {
                       </div>
                     );
                   })}
-
-                  <div ref={messagesEndRef} />
                 </div>
 
-                {/* =================================================
-                    REPLY BOX
-                ================================================== */}
+                {/* REPLY BOX */}
 
                 <div className="border-t border-white/[0.08] p-4 sm:p-5">
                   {selectedConversation.status === "closed" ? (
@@ -1199,9 +1215,7 @@ function AdminInbox() {
         </div>
       </div>
 
-      {/* =====================================================
-          DELETE MODAL
-      ====================================================== */}
+      {/* DELETE MODAL */}
 
       {deleteTarget && (
         <div
@@ -1214,8 +1228,6 @@ function AdminInbox() {
         >
           <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/[0.09] bg-zinc-950 shadow-2xl">
             <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-red-500/[0.05] blur-[70px]" />
-
-            {/* CLOSE */}
 
             <button
               type="button"

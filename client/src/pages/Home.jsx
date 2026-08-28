@@ -89,10 +89,13 @@ function Home() {
   return (
     <section className="relative min-h-screen overflow-hidden bg-black text-white lg:h-[100dvh]">
       {/* BACKGROUND */}
+
       <div className="home-grid pointer-events-none absolute inset-0" />
+
       <div className="home-moving-light pointer-events-none absolute inset-0" />
 
       {/* FLOATING DECORATIONS */}
+
       <Code2
         size={34}
         className="tech-float tech-float-one pointer-events-none absolute left-[6%] top-[15%] hidden text-orange-400/20 lg:block"
@@ -131,7 +134,9 @@ function Home() {
       </span>
 
       <div className="design-dots pointer-events-none absolute bottom-[12%] right-[3%] hidden grid-cols-4 gap-3 lg:grid">
-        {Array.from({ length: 12 }).map((_, index) => (
+        {Array.from({
+          length: 12,
+        }).map((_, index) => (
           <span
             key={index}
             className="h-1.5 w-1.5 rounded-full bg-orange-400/30"
@@ -140,9 +145,11 @@ function Home() {
       </div>
 
       {/* MAIN */}
+
       <div className="relative z-10 mx-auto min-h-screen w-full max-w-7xl px-6 pb-8 pt-14 lg:h-full lg:min-h-0 lg:px-10 lg:pb-3 lg:pt-6">
         <div className="relative lg:h-full">
           {/* LEFT CONTENT */}
+
           <div className="relative z-40 lg:absolute lg:left-0 lg:top-[4%] lg:w-[52%]">
             <p className="mb-4 text-xs uppercase tracking-[0.4em] text-orange-500 sm:text-sm">
               Hello, I'm
@@ -154,11 +161,13 @@ function Home() {
             </h1>
 
             {/* NAVBAR */}
+
             <div className="my-6 border-y border-white/10 py-4 lg:my-4 lg:py-3">
               <Navbar />
             </div>
 
             {/* PROFESSION */}
+
             <h2 className="text-3xl font-light leading-tight text-zinc-400 sm:text-4xl lg:text-[clamp(2rem,4.4vh,2.8rem)]">
               I'm an aspiring
               <span className="mt-1 block font-medium">
@@ -168,6 +177,7 @@ function Home() {
             </h2>
 
             {/* DESCRIPTION */}
+
             <div className="mt-4 flex max-w-xl">
               <span className="mr-4 w-px shrink-0 bg-orange-500/70" />
 
@@ -179,6 +189,7 @@ function Home() {
             </div>
 
             {/* BUTTONS */}
+
             <div className="mt-5 flex flex-wrap gap-4">
               <Link
                 to="/projects"
@@ -200,21 +211,17 @@ function Home() {
             </div>
           </div>
 
-          {/* PROFILE */}
-          <div className="relative isolate mt-12 min-h-[520px] lg:absolute lg:bottom-[55px] lg:right-[-2%] lg:top-0 lg:mt-0 lg:min-h-0 lg:w-[53%]">
-            {/* Orange glow */}
-            <div className="orange-light pointer-events-none absolute bottom-[2%] left-1/2 h-[82%] w-[105%] -translate-x-1/2 rounded-full" />
+          {/* =================================================
+              PROFILE
+              NO RINGS
+              NO GLOW
+              NO RECTANGULAR OVERLAY
+              IMAGE ITSELF FADES AT THE BOTTOM
+          ================================================== */}
 
-            {/* Outer ring */}
-            <div className="pointer-events-none absolute left-1/2 top-[48%] hidden h-[580px] w-[580px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-orange-400/[0.08] lg:block" />
-
-            {/* Inner ring */}
-            <div className="pointer-events-none absolute left-1/2 top-[51%] hidden h-[450px] w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-orange-400/10 lg:block" />
-
-            {/* Inner glow */}
-            <div className="profile-backlight pointer-events-none absolute bottom-[9%] left-1/2 hidden h-[65%] w-[72%] -translate-x-1/2 rounded-full lg:block" />
-
+          <div className="relative mt-12 min-h-[520px] lg:absolute lg:bottom-[55px] lg:right-[-2%] lg:top-0 lg:mt-0 lg:min-h-0 lg:w-[53%]">
             {/* DESKTOP PROFILE */}
+
             <img
               src={profileImage}
               alt="Daniel Domingo"
@@ -234,37 +241,47 @@ function Home() {
                 max-lg:hidden
               "
               style={{
-                filter: "grayscale(100%) contrast(1.14) brightness(0.98)",
+                filter: "grayscale(100%) contrast(1.26) brightness(0.94)",
+
                 WebkitMaskImage:
-                  "linear-gradient(to bottom, black 0%, black 84%, rgba(0,0,0,0.96) 90%, rgba(0,0,0,0.72) 95%, transparent 100%)",
+                  "linear-gradient(to bottom, black 0%, black 72%, rgba(0,0,0,0.98) 78%, rgba(0,0,0,0.9) 84%, rgba(0,0,0,0.68) 89%, rgba(0,0,0,0.38) 94%, rgba(0,0,0,0.12) 98%, transparent 100%)",
+
                 maskImage:
-                  "linear-gradient(to bottom, black 0%, black 84%, rgba(0,0,0,0.96) 90%, rgba(0,0,0,0.72) 95%, transparent 100%)",
+                  "linear-gradient(to bottom, black 0%, black 72%, rgba(0,0,0,0.98) 78%, rgba(0,0,0,0.9) 84%, rgba(0,0,0,0.68) 89%, rgba(0,0,0,0.38) 94%, rgba(0,0,0,0.12) 98%, transparent 100%)",
               }}
             />
 
             {/* MOBILE PROFILE */}
-            <div className="relative flex min-h-[500px] items-end justify-center overflow-hidden lg:hidden">
-              <div className="mobile-profile-light pointer-events-none absolute bottom-[5%] left-1/2 h-[75%] w-full -translate-x-1/2 rounded-full" />
 
+            <div className="relative flex min-h-[500px] items-end justify-center overflow-hidden lg:hidden">
               <img
                 src={profileImage}
                 alt="Daniel Domingo"
-                className="relative z-20 max-h-[600px] w-auto max-w-full object-contain object-bottom mix-blend-lighten"
+                className="
+                  relative
+                  z-20
+                  max-h-[600px]
+                  w-auto
+                  max-w-full
+                  object-contain
+                  object-bottom
+                  mix-blend-lighten
+                "
                 style={{
-                  filter: "grayscale(100%) contrast(1.14) brightness(0.98)",
+                  filter: "grayscale(100%) contrast(1.26) brightness(0.94)",
+
                   WebkitMaskImage:
-                    "linear-gradient(to bottom, black 0%, black 82%, rgba(0,0,0,0.95) 89%, rgba(0,0,0,0.65) 95%, transparent 100%)",
+                    "linear-gradient(to bottom, black 0%, black 70%, rgba(0,0,0,0.98) 77%, rgba(0,0,0,0.88) 84%, rgba(0,0,0,0.62) 90%, rgba(0,0,0,0.3) 95%, rgba(0,0,0,0.1) 98%, transparent 100%)",
+
                   maskImage:
-                    "linear-gradient(to bottom, black 0%, black 82%, rgba(0,0,0,0.95) 89%, rgba(0,0,0,0.65) 95%, transparent 100%)",
+                    "linear-gradient(to bottom, black 0%, black 70%, rgba(0,0,0,0.98) 77%, rgba(0,0,0,0.88) 84%, rgba(0,0,0,0.62) 90%, rgba(0,0,0,0.3) 95%, rgba(0,0,0,0.1) 98%, transparent 100%)",
                 }}
               />
             </div>
-
-            {/* BOTTOM FADE ONLY */}
-            <div className="pointer-events-none absolute bottom-0 left-[-8%] right-[-8%] z-30 h-20 bg-gradient-to-t from-black/70 to-transparent" />
           </div>
 
           {/* TECHNOLOGIES */}
+
           <div className="relative z-50 mt-6 rounded-2xl border border-orange-400/20 bg-zinc-950/90 px-5 py-3 backdrop-blur-xl lg:absolute lg:bottom-[76px] lg:left-0 lg:mt-0 lg:w-[540px]">
             <p className="mb-3 text-[9px] uppercase tracking-[0.32em] text-zinc-500">
               Technologies I work with
@@ -294,6 +311,7 @@ function Home() {
           </div>
 
           {/* FEATURE STRIP */}
+
           <div className="relative z-50 mt-4 grid overflow-hidden rounded-2xl border border-white/10 bg-zinc-950/95 backdrop-blur-xl sm:grid-cols-2 lg:absolute lg:bottom-0 lg:left-0 lg:right-0 lg:mt-0 xl:grid-cols-4">
             {features.map((feature, index) => {
               const Icon = feature.icon;

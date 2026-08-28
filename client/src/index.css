@@ -19,137 +19,419 @@ body {
 }
 
 /* =========================================================
-   MOVING GRID
+   HISTORIA BACKGROUND GRID
 ========================================================= */
 
 .home-grid {
-  opacity: 0.5;
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.4;
 
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
 
-  background-size: 80px 80px;
+  background-size: 78px 78px;
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 7%,
+    #000 90%,
+    transparent 100%
+  );
 
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    black 10%,
-    black 85%,
+    #000 7%,
+    #000 90%,
     transparent 100%
   );
 
-  animation: homeGridMove 28s linear infinite;
+  animation: historiaGridMove 38s linear infinite;
 }
 
-@keyframes homeGridMove {
+@keyframes historiaGridMove {
   from {
     background-position: 0 0;
   }
 
   to {
-    background-position: 80px 80px;
+    background-position: 78px 78px;
   }
 }
 
 /* =========================================================
-   MOVING BACKGROUND LIGHT
+   RISING LIGHT PARTICLES
 ========================================================= */
 
-.home-moving-light {
-  background: radial-gradient(
-    circle at 70% 40%,
-    rgba(255, 255, 255, 0.07),
-    rgba(255, 255, 255, 0.025) 25%,
-    transparent 50%
-  );
+.home-grid::before {
+  content: "";
 
-  animation: homeLightMove 10s ease-in-out infinite alternate;
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.45;
+
+  background-image:
+    /* ORANGE */
+    radial-gradient(
+      circle,
+      rgba(245, 158, 11, 0.7) 0 1px,
+      rgba(245, 158, 11, 0.2) 1px,
+      transparent 2px
+    ),
+    /* CYAN */
+    radial-gradient(
+        circle,
+        rgba(34, 211, 238, 0.55) 0 1px,
+        rgba(34, 211, 238, 0.14) 1px,
+        transparent 2px
+      ),
+    /* VIOLET */
+    radial-gradient(
+        circle,
+        rgba(167, 139, 250, 0.48) 0 1px,
+        rgba(167, 139, 250, 0.12) 1px,
+        transparent 2px
+      ),
+    /* WHITE */
+    radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.44) 0 1px,
+        rgba(255, 255, 255, 0.1) 1px,
+        transparent 2px
+      ),
+    /* SOFT GREEN */
+    radial-gradient(circle, rgba(52, 211, 153, 0.42) 0 0.8px, transparent 1.6px);
+
+  background-repeat: repeat;
+
+  background-size:
+    280px 260px,
+    340px 310px,
+    410px 370px,
+    230px 290px,
+    360px 430px;
+
+  background-position:
+    20px 240px,
+    130px 170px,
+    260px 310px,
+    75px 110px,
+    200px 390px;
+
+  animation: historiaParticlesRise 34s linear infinite;
 }
 
-@keyframes homeLightMove {
+@keyframes historiaParticlesRise {
   0% {
-    transform: translate(-7%, -3%) scale(0.96);
-    opacity: 0.6;
+    background-position:
+      20px 260px,
+      130px 310px,
+      260px 370px,
+      75px 290px,
+      200px 430px;
+
+    opacity: 0.28;
+  }
+
+  25% {
+    background-position:
+      28px 80px,
+      120px 90px,
+      268px 120px,
+      82px 60px,
+      194px 170px;
+
+    opacity: 0.42;
   }
 
   50% {
-    transform: translate(4%, 3%) scale(1.06);
-    opacity: 1;
+    background-position:
+      16px -100px,
+      138px -130px,
+      252px -130px,
+      68px -170px,
+      207px -90px;
+
+    opacity: 0.5;
+  }
+
+  75% {
+    background-position:
+      25px -280px,
+      126px -350px,
+      266px -380px,
+      80px -400px,
+      196px -350px;
+
+    opacity: 0.4;
   }
 
   100% {
-    transform: translate(8%, -2%) scale(1);
-    opacity: 0.75;
+    background-position:
+      20px -520px,
+      130px -620px,
+      260px -740px,
+      75px -580px,
+      200px -860px;
+
+    opacity: 0.26;
   }
 }
 
 /* =========================================================
-   ORANGE PROFILE BACKLIGHT
+   TECHNICAL MICRO ACCENTS
 ========================================================= */
 
-.orange-light {
-  z-index: 1;
+.home-grid::after {
+  content: "";
 
-  background: radial-gradient(
-    circle,
-    rgba(245, 158, 11, 0.24) 0%,
-    rgba(245, 158, 11, 0.12) 28%,
-    rgba(245, 158, 11, 0.04) 48%,
-    transparent 72%
-  );
+  position: absolute;
+  inset: 0;
 
-  filter: blur(45px);
+  pointer-events: none;
 
-  animation: orangeLightMove 8s ease-in-out infinite alternate;
+  opacity: 0.1;
+
+  background:
+    linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.7), transparent)
+      10% 20% / 54px 1px no-repeat,
+    linear-gradient(180deg, transparent, rgba(34, 211, 238, 0.5), transparent)
+      20% 76% / 1px 34px no-repeat,
+    linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent)
+      75% 72% / 60px 1px no-repeat,
+    linear-gradient(180deg, transparent, rgba(167, 139, 250, 0.45), transparent)
+      89% 29% / 1px 38px no-repeat;
+
+  animation: historiaAccentPulse 9s ease-in-out infinite alternate;
 }
 
-@keyframes orangeLightMove {
-  0% {
-    transform: translate(-8%, 2%) scale(0.9);
-    opacity: 0.65;
-  }
-
-  50% {
-    transform: translate(3%, -4%) scale(1.08);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(7%, 2%) scale(0.96);
-    opacity: 0.78;
-  }
-}
-
-/* =========================================================
-   WHITE PROFILE GLOW
-========================================================= */
-
-.profile-backlight {
-  z-index: 2;
-
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.09),
-    rgba(255, 255, 255, 0.025) 40%,
-    transparent 70%
-  );
-
-  filter: blur(45px);
-
-  animation: profileGlowMove 7s ease-in-out infinite alternate;
-}
-
-@keyframes profileGlowMove {
+@keyframes historiaAccentPulse {
   from {
-    transform: translate(-4%, 0%) scale(0.92);
-    opacity: 0.65;
+    opacity: 0.06;
   }
 
   to {
-    transform: translate(5%, -2%) scale(1.07);
-    opacity: 1;
+    opacity: 0.13;
   }
+}
+
+/* =========================================================
+   AURORA BOREALIS BACKGROUND
+
+   Replaces circular lighting.
+   No giant blurred circles.
+========================================================= */
+
+.home-moving-light {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  overflow: hidden;
+
+  opacity: 0.78;
+
+  background-image:
+    /* GREEN AURORA */
+    linear-gradient(
+      115deg,
+      transparent 7%,
+      rgba(52, 211, 153, 0.015) 17%,
+      rgba(52, 211, 153, 0.07) 28%,
+      rgba(34, 211, 238, 0.04) 38%,
+      transparent 50%
+    ),
+    /* CYAN AURORA */
+    linear-gradient(
+        128deg,
+        transparent 20%,
+        rgba(34, 211, 238, 0.015) 30%,
+        rgba(34, 211, 238, 0.06) 41%,
+        rgba(99, 102, 241, 0.035) 52%,
+        transparent 64%
+      ),
+    /* VIOLET AURORA */
+    linear-gradient(
+        104deg,
+        transparent 36%,
+        rgba(139, 92, 246, 0.012) 44%,
+        rgba(167, 139, 250, 0.05) 53%,
+        rgba(34, 211, 238, 0.025) 62%,
+        transparent 72%
+      ),
+    /* VERY SUBTLE HISTORIA ORANGE */
+    linear-gradient(
+        122deg,
+        transparent 49%,
+        rgba(245, 158, 11, 0.008) 57%,
+        rgba(245, 158, 11, 0.028) 63%,
+        transparent 72%
+      ),
+    /* SOFT AURORA HAZE */
+    linear-gradient(
+        180deg,
+        rgba(52, 211, 153, 0.025) 0%,
+        transparent 28%,
+        rgba(34, 211, 238, 0.015) 52%,
+        transparent 78%
+      );
+
+  background-size:
+    190% 180%,
+    210% 180%,
+    220% 190%,
+    240% 190%,
+    100% 100%;
+
+  background-position:
+    -60% 15%,
+    100% 22%,
+    -80% 42%,
+    120% 55%,
+    0 0;
+
+  background-repeat: no-repeat;
+
+  animation: historiaAuroraMove 22s ease-in-out infinite alternate;
+}
+
+/* =========================================================
+   AURORA MOVEMENT
+========================================================= */
+
+@keyframes historiaAuroraMove {
+  0% {
+    background-position:
+      -60% 15%,
+      100% 22%,
+      -80% 42%,
+      120% 55%,
+      0 0;
+
+    opacity: 0.55;
+  }
+
+  25% {
+    background-position:
+      -20% 22%,
+      72% 17%,
+      -38% 37%,
+      85% 50%,
+      0 0;
+
+    opacity: 0.72;
+  }
+
+  50% {
+    background-position:
+      18% 14%,
+      38% 27%,
+      4% 44%,
+      55% 58%,
+      0 0;
+
+    opacity: 0.82;
+  }
+
+  75% {
+    background-position:
+      55% 25%,
+      5% 18%,
+      45% 34%,
+      20% 48%,
+      0 0;
+
+    opacity: 0.7;
+  }
+
+  100% {
+    background-position:
+      100% 18%,
+      -40% 29%,
+      90% 45%,
+      -25% 54%,
+      0 0;
+
+    opacity: 0.58;
+  }
+}
+
+/* =========================================================
+   AURORA SECONDARY CURTAIN
+
+   Creates soft moving vertical folds.
+========================================================= */
+
+.home-moving-light::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.5;
+
+  background-image: linear-gradient(
+    100deg,
+    transparent 8%,
+    rgba(52, 211, 153, 0.025) 18%,
+    transparent 27%,
+    rgba(34, 211, 238, 0.02) 39%,
+    transparent 48%,
+    rgba(167, 139, 250, 0.018) 59%,
+    transparent 70%,
+    rgba(52, 211, 153, 0.018) 82%,
+    transparent 92%
+  );
+
+  background-size: 180% 100%;
+  background-position: 0% 50%;
+
+  animation: historiaAuroraCurtain 28s ease-in-out infinite alternate;
+}
+
+@keyframes historiaAuroraCurtain {
+  from {
+    background-position: 0% 50%;
+    opacity: 0.3;
+  }
+
+  to {
+    background-position: 100% 50%;
+    opacity: 0.6;
+  }
+}
+
+/* =========================================================
+   AURORA FADE
+========================================================= */
+
+.home-moving-light::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.18) 0%,
+    transparent 18%,
+    transparent 74%,
+    rgba(0, 0, 0, 0.42) 100%
+  );
 }
 
 /* =========================================================
@@ -162,41 +444,41 @@ body {
 }
 
 .orbit-ring-one {
-  animation: orbitOneMove 10s ease-in-out infinite;
+  animation: orbitOneMove 14s ease-in-out infinite;
 }
 
 .orbit-ring-two {
-  animation: orbitTwoMove 13s ease-in-out infinite;
+  animation: orbitTwoMove 17s ease-in-out infinite;
 }
 
 @keyframes orbitOneMove {
   0%,
   100% {
-    transform: scale(0.96);
-    opacity: 0.35;
+    transform: scale(0.985);
+    opacity: 0.24;
   }
 
   50% {
-    transform: scale(1.05);
-    opacity: 0.85;
+    transform: scale(1.018);
+    opacity: 0.5;
   }
 }
 
 @keyframes orbitTwoMove {
   0%,
   100% {
-    transform: scale(1.04);
-    opacity: 0.3;
+    transform: scale(1.015);
+    opacity: 0.2;
   }
 
   50% {
-    transform: scale(0.96);
-    opacity: 0.75;
+    transform: scale(0.985);
+    opacity: 0.45;
   }
 }
 
 /* =========================================================
-   SCANNING LIGHT
+   SCANNING LINE
 ========================================================= */
 
 .scan-light {
@@ -204,34 +486,39 @@ body {
 
   background: linear-gradient(
     90deg,
-    transparent,
-    rgba(245, 158, 11, 0.08),
-    rgba(255, 255, 255, 0.13),
-    rgba(245, 158, 11, 0.08),
-    transparent
+    transparent 4%,
+    rgba(52, 211, 153, 0.015),
+    rgba(34, 211, 238, 0.04),
+    rgba(255, 255, 255, 0.04),
+    rgba(167, 139, 250, 0.018),
+    transparent 96%
   );
 
-  box-shadow: 0 0 14px rgba(245, 158, 11, 0.08);
+  box-shadow: none;
 
-  animation: scanHome 12s linear infinite;
+  animation: scanHome 20s linear infinite;
 }
 
 @keyframes scanHome {
   0% {
-    top: 5%;
+    top: 4%;
     opacity: 0;
   }
 
-  10% {
-    opacity: 0.5;
+  12% {
+    opacity: 0.13;
   }
 
-  90% {
-    opacity: 0.3;
+  48% {
+    opacity: 0.24;
+  }
+
+  88% {
+    opacity: 0.1;
   }
 
   100% {
-    top: 95%;
+    top: 96%;
     opacity: 0;
   }
 }
@@ -242,26 +529,27 @@ body {
 
 .tech-float {
   pointer-events: none;
+  opacity: 0.68;
 }
 
 .tech-float-one {
-  animation: floatTechOne 8s ease-in-out infinite;
+  animation: floatTechOne 12s ease-in-out infinite;
 }
 
 .tech-float-two {
-  animation: floatTechTwo 10s ease-in-out infinite;
+  animation: floatTechTwo 15s ease-in-out infinite;
 }
 
 .tech-float-three {
-  animation: floatTechOne 11s ease-in-out infinite reverse;
+  animation: floatTechOne 17s ease-in-out infinite reverse;
 }
 
 .tech-float-four {
-  animation: floatTechTwo 9s ease-in-out infinite reverse;
+  animation: floatTechTwo 14s ease-in-out infinite reverse;
 }
 
 .tech-float-five {
-  animation: floatTechOne 12s ease-in-out infinite;
+  animation: floatTechOne 18s ease-in-out infinite;
 }
 
 @keyframes floatTechOne {
@@ -271,7 +559,7 @@ body {
   }
 
   50% {
-    transform: translate(10px, -20px) rotate(8deg);
+    transform: translate(6px, -11px) rotate(3deg);
   }
 }
 
@@ -282,7 +570,7 @@ body {
   }
 
   50% {
-    transform: translate(-12px, -15px) rotate(-8deg);
+    transform: translate(-7px, -9px) rotate(-3deg);
   }
 }
 
@@ -291,15 +579,15 @@ body {
 ========================================================= */
 
 .floating-code-one {
-  animation: codeFloatOne 8s ease-in-out infinite;
+  animation: codeFloatOne 13s ease-in-out infinite;
 }
 
 .floating-code-two {
-  animation: codeFloatTwo 11s ease-in-out infinite;
+  animation: codeFloatTwo 16s ease-in-out infinite;
 }
 
 .floating-code-three {
-  animation: codeFloatOne 13s ease-in-out infinite reverse;
+  animation: codeFloatOne 18s ease-in-out infinite reverse;
 }
 
 @keyframes codeFloatOne {
@@ -309,7 +597,7 @@ body {
   }
 
   50% {
-    transform: translateY(-14px);
+    transform: translateY(-8px);
   }
 }
 
@@ -320,100 +608,30 @@ body {
   }
 
   50% {
-    transform: translate(-10px, 10px);
+    transform: translate(-6px, 6px);
   }
 }
 
 /* =========================================================
-   DECORATIVE DOTS
+   DECORATIVE DOT MATRIX
 ========================================================= */
 
 .design-dots {
-  animation: floatingDesignDots 8s ease-in-out infinite;
+  opacity: 0.65;
+
+  animation: floatingDesignDots 13s ease-in-out infinite;
 }
 
 @keyframes floatingDesignDots {
   0%,
   100% {
     transform: translateY(0);
-    opacity: 0.45;
+    opacity: 0.28;
   }
 
   50% {
-    transform: translateY(-16px);
-    opacity: 1;
-  }
-}
-
-/* =========================================================
-   MOBILE PROFILE LIGHT
-========================================================= */
-
-.mobile-profile-light {
-  background: radial-gradient(
-    circle,
-    rgba(245, 158, 11, 0.13),
-    rgba(255, 255, 255, 0.035) 35%,
-    transparent 70%
-  );
-
-  filter: blur(35px);
-
-  animation: mobileGlowMove 7s ease-in-out infinite alternate;
-}
-
-@keyframes mobileGlowMove {
-  from {
-    transform: translateX(-53%) scale(0.92);
-    opacity: 0.7;
-  }
-
-  to {
-    transform: translateX(-47%) scale(1.08);
-    opacity: 1;
-  }
-}
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 1023px) {
-  .home-grid {
-    background-size: 60px 60px;
-    opacity: 0.35;
-  }
-
-  .home-moving-light {
-    background: radial-gradient(
-      circle at 50% 70%,
-      rgba(255, 255, 255, 0.05),
-      rgba(255, 255, 255, 0.015) 35%,
-      transparent 65%
-    );
-  }
-
-  .scan-light {
-    opacity: 0.5;
-  }
-}
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .home-grid,
-  .home-moving-light,
-  .orange-light,
-  .profile-backlight,
-  .orbit-ring,
-  .scan-light,
-  .tech-float,
-  .floating-code,
-  .design-dots,
-  .mobile-profile-light {
-    animation: none !important;
+    transform: translateY(-8px);
+    opacity: 0.52;
   }
 }
 
@@ -440,7 +658,7 @@ body {
 .navbar-moving-top {
   pointer-events: none;
 
-  animation: navbarLiftToTop 220msc-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: navbarLiftToTop 220ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes navbarLiftToTop {
@@ -484,17 +702,19 @@ body {
 }
 
 .home-bottom-card:hover {
-  border-color: rgba(245, 158, 11, 0.18);
+  border-color: rgba(245, 158, 11, 0.2);
 
-  box-shadow: 0 0 40px rgba(245, 158, 11, 0.035);
+  box-shadow: 0 0 38px rgba(245, 158, 11, 0.03);
 }
 
 .tech-card-item {
-  transition: transform 300ms ease;
+  transition:
+    transform 300ms ease,
+    opacity 300ms ease;
 }
 
 .tech-card-item:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 }
 
 .feature-card-item {
@@ -504,18 +724,123 @@ body {
 }
 
 .feature-card-item:hover {
-  background: rgba(245, 158, 11, 0.025);
+  background: rgba(245, 158, 11, 0.022);
 }
 
-/* Phone */
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1023px) {
+  .home-grid {
+    background-size: 60px 60px;
+    opacity: 0.31;
+  }
+
+  .home-grid::before {
+    opacity: 0.32;
+
+    background-size:
+      230px 250px,
+      310px 340px,
+      380px 410px,
+      270px 320px,
+      350px 440px;
+
+    animation-duration: 40s;
+  }
+
+  .home-grid::after {
+    opacity: 0.07;
+  }
+
+  .home-moving-light {
+    opacity: 0.6;
+
+    background-size:
+      220% 180%,
+      230% 190%,
+      240% 190%,
+      250% 190%,
+      100% 100%;
+
+    animation-duration: 27s;
+  }
+
+  .home-moving-light::before {
+    opacity: 0.35;
+    animation-duration: 32s;
+  }
+
+  .tech-float {
+    opacity: 0.5;
+  }
+
+  .scan-light {
+    opacity: 0.2;
+  }
+}
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 640px) {
+  .home-grid {
+    opacity: 0.26;
+  }
+
+  .home-grid::before {
+    opacity: 0.22;
+  }
+
+  .home-grid::after {
+    opacity: 0.045;
+  }
+
+  .home-moving-light {
+    opacity: 0.48;
+
+    background-size:
+      260% 180%,
+      270% 190%,
+      280% 200%,
+      290% 200%,
+      100% 100%;
+  }
+
+  .home-moving-light::before {
+    opacity: 0.27;
+  }
+}
+
+/* =========================================================
+   PHONE NAVBAR
+========================================================= */
+
 @media (max-width: 767px) {
   .navbar-moving-top {
     animation-duration: 300ms;
   }
 }
 
-/* Reduced motion */
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
+  .home-grid,
+  .home-grid::before,
+  .home-grid::after,
+  .home-moving-light,
+  .home-moving-light::before,
+  .orbit-ring,
+  .scan-light,
+  .tech-float,
+  .floating-code-one,
+  .floating-code-two,
+  .floating-code-three,
+  .design-dots,
   .navbar-home-enter,
   .navbar-moving-top,
   .navbar-top-enter {
